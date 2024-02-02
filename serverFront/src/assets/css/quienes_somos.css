@@ -1,0 +1,109 @@
+.about-us{
+    width: 100%;
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    grid-template-areas: "description img";
+}
+
+    .about-us p{
+        text-align: justify;
+        grid-area: description;
+    }
+
+    .about-us img{
+        grid-area: img;
+        max-height: 150px;
+    }
+
+.our-team{
+    margin: 25px 0;
+}
+    .our-team .team{
+        display: flex;
+        padding: 0 15px;
+        margin-top: 25px;
+        overflow: auto; 
+        background-color: #f2f2f2;
+        border-radius: 5px;
+        align-items: center;
+        overflow-x: hidden;
+    }
+
+    .our-team .team::-webkit-scrollbar{
+        width: 0;
+        transition: max-height 0.5s ease-out;
+    }
+        .our-team .team .float-button{
+            z-index: 10000;
+            position: absolute;
+            height: 80px;
+            width: 60px;
+            padding: 0;
+            border: 0;
+            background-color: transparent;
+            opacity: 0.1;
+            transition: all .5s ease;
+            cursor: pointer;
+        }
+
+        .our-team .team .float-button:hover{
+            opacity: 1;
+        }
+            .our-team .team .float-button img{
+                height: 100%;
+                width: 100%;
+            }
+
+        .our-team .team .float-button.next-button{
+            right: 2%;
+        }
+
+        .our-team .team .float-button.prev-button{
+            left: 2%;
+        }
+
+        .our-team .team .div-profile{
+            visibility: collapse;
+            opacity: 0;
+            width:0;
+            margin: 0;
+            position: relative;
+            transition: all 1s linear;
+        }   
+
+        .our-team .team .div-profile.show{
+            display: block;
+            margin: 0 6%;
+            opacity: 1;
+            width: 140px;
+            visibility: visible;
+            transition: all 0.5s linear;
+        }
+
+            .our-team .team  .div-profile .profile{
+                margin-top: 15px;
+                width: 140px;
+                height: 140px;
+                overflow: hidden;
+                border-radius: 50%;
+                display: inline-block;
+            } 
+            
+        .our-team  .team .profile img{
+            height: 100%;
+            margin-left: -10%;
+        }
+
+
+
+@media only screen and (max-width: 1600px) {
+    .our-team .team .div-profile.show {
+        margin: 0 5.2%;
+    }
+}
+
+@media only screen and (max-width: 1400px) {
+    .our-team .team .div-profile.show {
+        margin: 0 4.5%;
+    }
+}

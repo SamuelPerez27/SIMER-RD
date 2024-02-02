@@ -1,0 +1,29 @@
+.bg{
+    height: 100vh;
+    background-image: url('../img/Login/ciclo.png');
+    background-size:cover;
+    background-position: right;
+}
+
+.col-login{
+    box-shadow: -8px -1px 6px rgba(0, 0, 0, .4);
+}
+
+.login-container{   
+    height: 100vh;
+}
+
+.login-box{
+    width: 80%;
+}
+    .login-box img{
+        max-height: 65px;
+    }
+
+.input-login{
+    background-color: rgba(255, 255, 255, .3);
+}
+
+.error-login-content{
+    transition: all .5s ease;
+}

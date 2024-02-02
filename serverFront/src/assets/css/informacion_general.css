@@ -1,0 +1,150 @@
+.dataTable-container{
+    width: 100%;
+    overflow-x: scroll;
+}
+
+.table-indicador{
+    table-layout: fixed;
+    width: 5000px;
+    border-spacing: 0;
+    border-collapse: separate;
+}
+
+.table-dev-sqa{
+    width: 2000px;
+}
+
+.table-indicador th,
+.table-indicador td{
+    border-bottom: 1px solid #ccc;
+}
+
+.table-indicador th{
+    background-color: #70AD47;
+    color: #fff;
+}
+
+.table-indicador td{
+    background-color: #C6E0B4;
+}
+
+.dataTable-table{
+    max-width: none;
+}
+
+.dataTable-table th, .dataTable-table>tfoot>tr>th, .dataTable-table>thead>tr>th{
+    text-align: center;
+}
+
+.cont-info-general{
+    background-color: #f2f2f2;
+    border-radius: 5px;
+    padding: 15px;
+}
+
+    .cont-info-general .cont-info-title{
+        width: 100%;
+        position: relative;
+    }
+
+        .cont-info-general .cont-info-title .icon-download{
+            position: absolute;
+            top: 0;
+            right: 0;
+            cursor: pointer;
+            transition: all .3s ease;
+        }
+
+            .cont-info-general .cont-info-title .icon-download a{
+                text-decoration: none;
+                color: #232323;   
+            }
+
+            .cont-info-general .cont-info-title .icon-download a:hover{
+                color: #4caf50;
+            }
+    
+    .cont-info-general .cont-info-img{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    } 
+
+    .informacion-general-box{
+        box-shadow: 3px 2px 7px rgba(0,0,0, .25);
+    }
+
+    .item-list-info-general{
+        transition: all .3s ease;
+    }
+    .item-list-info-general:hover{
+        color: #4caf50;
+    }
+
+.transition{
+    transition: all .5s ease;
+}
+
+.memory-details-box{
+    box-shadow: -3px 2px 7px rgba(0,0,0, .25);
+    max-height: 75vh;
+    overflow-y: auto;
+    position: fixed !important;
+    right: 0;
+}
+
+.span-btn-close{
+    position: absolute;
+    display: inline;
+    top: 8px;
+    right: 5px;
+}
+    .span-btn-close .btn-close-step{
+        background-color: transparent;
+        color: red;
+        border: none;
+        cursor: pointer;
+        font-weight: bold;
+    }
+        
+        .span-btn-close .btn-close-step img{
+            height: 25px;
+        }
+
+.card-memory-detail{
+    transition: all .5s ease; 
+    box-shadow: 3px 6px 6px rgba(0, 0, 0, .20);
+}
+
+.card-memory-detail-green .card-body h6{
+    color: #4caf50;
+}
+
+.card-memory-detail-blue .card-body h6{
+    color: #1968B0;
+}
+
+.card-memory-detail-green:hover{
+    box-shadow: 1px 3px 4px rgba(76, 175, 80, .50);
+}
+
+
+.card-memory-detail-blue:hover{
+    box-shadow: 1px 3px 4px rgba(25, 104, 176, .50);
+} 
+
+
+.height-menu-info-general{
+    max-height: 75vh;
+    overflow-y: auto;
+    position: fixed !important;
+    left: 0;
+}
+
+.filter-button-disabled {
+    border: solid gray;
+}
+
+.filter-button {
+    border: solid black !important;
+}

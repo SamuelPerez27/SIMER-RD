@@ -1,0 +1,46 @@
+.bg-home {
+    background-position: center;
+    height: 80vh;
+    max-height: 80vh;
+}
+
+.carousel-control-prev {
+    transition: all .3s ease;
+}
+
+.carousel-control-prev:hover {
+    background-color: rgba(0, 0, 0, .1);
+}
+
+.carousel-control-next {
+    transition: all .3s ease;
+}
+
+.carousel-control-next:hover {
+    background-color: rgba(0, 0, 0, .1);
+}
+
+.carousel-caption {
+    background-color: rgba(0, 0, 0, .3);
+}
+
+.btn-ver-mas {
+    padding: 10px 25px;
+    border-radius: 5px;
+    background-color: #4caf50;
+    border: 0;
+}
+
+.label-success {
+    padding-bottom: 5px;
+    padding-top: 5px;
+    background-color: #4caf50;
+    border: 0;
+    color: white;
+}
+
+
+.btn-ver-mas a {
+    color: #fff;
+    text-decoration: none;
+}

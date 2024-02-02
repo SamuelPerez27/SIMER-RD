@@ -1,0 +1,28 @@
+
+.categories-principal {
+    display: flex;
+    border: 1px solid #4caf50;
+}
+
+.categories-principal .category {
+    flex: 1;
+    background-color: transparent;
+    cursor: pointer;
+    padding: 8px;
+    transition: all .5s ease;
+}
+
+.categories-principal .category:hover {
+    background-color: #ddd;
+}
+
+.categories-principal .category.active {
+    color: #fff;
+    background-color: rgba(76, 175, 80, .7);
+}
+
+.categories-principal .category p {
+    font-size: 18px;
+    text-align: center;
+    width: 100%;
+}

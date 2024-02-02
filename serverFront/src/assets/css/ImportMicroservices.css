@@ -1,0 +1,22 @@
+.img-stage {
+    max-height: 35px;
+}
+
+.dataTable-container {
+    overflow-x: scroll !important;
+}
+
+.input-group-addon.danger {
+    width: 7%;
+    text-align: center;
+    margin: auto;
+    padding: 10px;
+}
+
+.modal .size-modal {
+    width: 95%;
+    max-width: none;
+    height: 100%;
+    margin: 50px;
+}
+

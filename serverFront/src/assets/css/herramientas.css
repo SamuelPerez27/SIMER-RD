@@ -1,0 +1,149 @@
+
+
+.search .searcher{
+    padding: 7.5px 15px;
+    border: 1.5px solid #7b7b7b;
+    border-radius: 5px;
+    outline: none;
+    transition: all .5s ease;
+}
+
+    .search .searcher:hover{
+        border: 1.5px solid #232323;
+    }
+
+    .search .searcher:focus{
+        border: 1.5px solid #4caf50;
+    }
+
+
+.ciclo-devops-filter{
+    width: 100%;
+    display: flex;
+    margin-top: 15px;
+}
+    .ciclo-devops-filter h4{
+        margin-right: 10px;
+    }
+
+.applications{
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+} 
+    .applications .tool{
+        flex-basis: 19%;
+        margin: 7.5px .5%;
+        height: 65px;
+        border:1px solid #ddd;
+        position: relative;
+        box-shadow: 1px 2px 7px rgba(0, 0, 0, .25);
+        border-radius: 5px;
+        transition: all .5s ease;
+        display: flex;
+    }
+    .applications .tool:hover{
+        box-shadow: 1px 4px 5px rgba(0, 0, 0, .55);
+    }
+
+    .applications .tool .tool-img{
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 35%;
+        border-right: 1px solid #d2d2d2;
+        padding: 7.5px;
+    }
+
+
+    .applications .tool .tool-description{
+        width: 65%;
+        height: 100%;
+    }
+
+    .tool-name{
+        padding: 7px 5px;
+    }
+    
+    .border-tool-name{
+        border-bottom: 1px solid #d2d2d2;
+    }
+
+    .tool .tool-description .height-tool-name{
+        height: 40%;
+    }
+
+    .tool-description .tool-name h6{
+        font-size: 13px;
+        text-align: left;
+        font-weight: bold;
+    }
+    
+    .applications .tool .tool-hiperlink{
+        padding: 3px 6px;
+    }
+
+    .height-hiperlink{
+        height: 60%;
+    }
+
+    .flex-between{
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+    }
+
+    .tool .tool-hiperlink span{
+        font-size: 13px;
+    }
+
+    .tool-hiperlink span a{
+        text-decoration: none;
+        color: #232323;
+        transition: all .5s ease;
+    }
+
+    .tool-hiperlink span a:hover{
+        color: #4caf50;
+        border-bottom: 1px solid #4caf50;
+    }
+
+    .applications .tool .information-icon{
+        position: absolute;
+        height: 20px;
+        width: 20px;
+        right: -5px;
+        top: -12px;
+        cursor: pointer;
+        font-size: 20px;
+    }
+        
+    .tool .tool-img img{
+        height: 100%;
+        max-width: 100%;
+    }
+
+.button-filters{
+    transition: all .5s ease;
+}
+
+.button-filters:hover{
+    color: #4caf50;
+}
+
+.list-none{
+    list-style: none;
+}
+
+tr .td-herramientas{
+    white-space: normal;
+}
+
+tr .max-td{
+    max-width: 500px;
+}
+
+.my-tree-div > .opacity-90{
+    opacity: .9;
+}
