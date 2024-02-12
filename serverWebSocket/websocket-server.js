@@ -1,7 +1,13 @@
-const WebSocket = require("ws");
+const WebSocket = require("ws");   // Importar el módulo de WebSocket
+const semaphore = require('semaphore')(1); //Modulo para implementar patron de semaforo
+
+
 
 // Crear un servidor de WebSocket en el puerto 8080
 const wss = new WebSocket.Server({ port: 8080 });
+
+//
+const clientsAdminConnect = [];
 
 // Datos que se enviarán al cliente
 const ubicaciones = [
@@ -100,6 +106,30 @@ function obtenerCantidadEnergiasRenovables() {
 }
 
 
+
+function verificarDisponibilidadSemaforo() {
+  if (semaphore.available()) {
+    console.log('El semáforo está disponible');
+    return true;
+  } else {
+    console.log('El semáforo no está disponible');
+    return false; 
+  }
+}
+
+function adquirirSemaforo() {
+  semaphore.take(() => {
+    console.log('El semáforo ha sido adquirido');
+  });
+}
+
+function liberarSemaforo() {
+  semaphore.leave(1);
+  console.log('El semáforo ha sido liberado');
+}
+
+
+
 // Eventos del WebSocket
 wss.on("connection", function connection(ws) {
   console.log("Cliente conectado");
@@ -144,7 +174,7 @@ wss.on("connection", function connection(ws) {
       produccionPorTipoEnergia,
       ubicacionesTotales: ubicaciones,
     });
-    console.log('Enviando: ' + data);
+   // console.log('Enviando: ' + data);
     ws.send(data);
   }, 5000);
 
@@ -157,25 +187,126 @@ wss.on("connection", function connection(ws) {
     const { tipo } = JSON.parse(message);
 
     if (tipo == "argegarEnergia") {
-      const { tip, nombreEnergia, produccionMinima, produccionMaxima } =
+      const { tip, nombreEnergia, produccionMinima, produccionMaxima, idPeticion  } =
         JSON.parse(message);
 
-      tiposEnergia.push(`${nombreEnergia}`);
-      produccionEnergia[`${nombreEnergia}`] = [
-        produccionMinima,
-        produccionMaxima,
-      ];
-    } else if (tipo == "eliminarEnergia") {
-      const { tip, nombreEnergia } = JSON.parse(message);
+        console.log('ID idPeticion Recibida: ' , idPeticion);
 
-      const index = tiposEnergia.indexOf(nombreEnergia);
-      if (index > -1) {
-        tiposEnergia.splice(index, 1);
+
+        if (verificarDisponibilidadSemaforo()) {
+      
+          //se llama la funcion para adquirir el semaforo
+          adquirirSemaforo();
+
+          console.log('Se adquirio el semaforo');
+
+          ws.send(JSON.stringify({
+            estadoSolicitud: `Solicitud ${idPeticion} En Proceso`
+          }));
+
+          setTimeout(function() {
+            
+            tiposEnergia.push(`${nombreEnergia}`);
+            produccionEnergia[`${nombreEnergia}`] = [
+              produccionMinima,
+              produccionMaxima,
+            ];
+            
+            console.log('Se agrego la energia', nombreEnergia, 'con produccion minima', produccionMinima, 'y produccion maxima', produccionMaxima);
+  
+            liberarSemaforo(); //Se llama la funcion para liberar el semaforo
+          
+            ws.send(JSON.stringify({ estadoSolicitud: `Solicitud ${idPeticion} finalizada` }));
+  
+            console.log('----- Solicitud Finalizada -----');
+
+          }, 20000);
+
+        }
+        else {
+          console.log('Se envio solicitud en espera');
+          ws.send(JSON.stringify({ estadoSolicitud: `Solicitud ${idPeticion} En Espera` }));
+        }
+                  
+    } else if (tipo == "eliminarEnergia") {
+      const { tip, nombreEnergia, idPeticion } = JSON.parse(message);
+
+      console.log('ID idPeticion Recibida: ' , idPeticion);
+
+
+      if (verificarDisponibilidadSemaforo()) {
+      
+        //se llama la funcion para adquirir el semaforo
+        adquirirSemaforo();
+
+        console.log('Se adquirio el semaforo');
+
+        ws.send(JSON.stringify({
+          estadoSolicitud: `Solicitud ${idPeticion} En Proceso`
+        }));
+
+        setTimeout(function() {
+          
+          const index = tiposEnergia.indexOf(nombreEnergia);
+          if (index > -1) {
+            tiposEnergia.splice(index, 1);
+          }
+          delete produccionEnergia[`${nombreEnergia}`];
+          
+          console.log('Se elimino la energia', nombreEnergia);
+
+          liberarSemaforo(); //Se llama la funcion para liberar el semaforo
+        
+          ws.send(JSON.stringify({ estadoSolicitud: `Solicitud ${idPeticion} finalizada` }));
+
+          console.log('----- Solicitud Finalizada -----');
+
+        }, 20000);
+
       }
-      delete produccionEnergia[`${nombreEnergia}`];
+      else {
+        console.log('Se envio solicitud en espera');
+        ws.send(JSON.stringify({ estadoSolicitud: `Solicitud ${idPeticion} En Espera` }));
+      }
+
+    
     } else if (tipo == "agregarProvincia") {
-      const { tipo, nombreProvincia } = JSON.parse(message);
-      ubicaciones.push(`${nombreProvincia}`);
+      const { tipo, nombreProvincia, idPeticion } = JSON.parse(message);
+     
+      console.log('ID idPeticion Recibida: ' , idPeticion);
+
+
+      if (verificarDisponibilidadSemaforo()) {
+      
+        //se llama la funcion para adquirir el semaforo
+        adquirirSemaforo();
+
+        console.log('Se adquirio el semaforo');
+
+        ws.send(JSON.stringify({
+          estadoSolicitud: `Solicitud ${idPeticion} En Proceso`
+        }));
+
+        setTimeout(function() {
+          
+          ubicaciones.push(`${nombreProvincia}`);
+          
+          console.log('Se agrego la provincia ', nombreProvincia);
+
+          liberarSemaforo(); //Se llama la funcion para liberar el semaforo
+        
+          ws.send(JSON.stringify({ estadoSolicitud: `Solicitud ${idPeticion} finalizada` }));
+
+          console.log('----- Solicitud Finalizada -----');
+
+        }, 20000);
+
+      }
+      else {
+        console.log('Se envio solicitud en espera');
+        ws.send(JSON.stringify({ estadoSolicitud: `Solicitud ${idPeticion} En Espera` }));
+      }
+      
     }
   });
 });

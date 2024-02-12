@@ -3,6 +3,13 @@
     <div v-if="showError" class="alert alert-danger" role="alert">
       Todos los campos son requeridos
     </div>
+
+    <div v-if="processInUse" class="alert alert-warning"  role="alert">
+      <strong>!Adventencia!</strong> Hay otro Administrador que esta haciendo cambios en el mismo formulario que intentas modificar, espera unos segunos y vuelve a intentarlo.
+    </div>
+
+
+
     <div class="page-title">
       <br />
       <h2 class="title-content">Panel de Control</h2>
@@ -251,6 +258,7 @@ export default {
     return {
       socketUrl: "ws://localhost:8080",
       showError: false,
+      processInUse: false,
       socketCoonection: null,
       promedioDeEnegia: 0,
       totalEnergiaProducida: 0,
@@ -258,6 +266,7 @@ export default {
       recordsHistory: 0,
       produccionPorEnergia: [],
       ubicacionesTotales: [],
+      estadoSolicitud: "",
     };
   },
 
@@ -333,31 +342,81 @@ export default {
           this.showError = false;
         }, 5000);
       } else {
+        const idPeticion = Math.floor(Math.random() * 1000) + 1;
         this.socketCoonection.send(
           JSON.stringify({
             tipo: "argegarEnergia",
             nombreEnergia: nombreEnergia,
             produccionMinima: produccionMinima,
             produccionMaxima: produccionMaxima,
+            idPeticion: idPeticion,
           })
         );
 
-        window.location.reload();
+        this.socketCoonection.onmessage = (event) => {
+          this.estadoSolicitud = JSON.parse(event.data).estadoSolicitud;
+        };
+
+        let intervalId = setInterval(() => {
+
+          this.socketCoonection.onmessage = (event) => {
+            this.estadoSolicitud = JSON.parse(event.data).estadoSolicitud;
+          };
+
+          if (this.estadoSolicitud === `Solicitud ${idPeticion} finalizada`) {
+            this.processInUse = false;
+            clearInterval(intervalId);
+            window.location.reload();
+          }
+          else {
+            this.processInUse = true;
+
+            console.log('Esperando respuesta del servidor');
+
+          }
+        }, 2000);
+
       }
     },
     eliminarEnergia() {
+      const idPeticion = Math.floor(Math.random() * 1000) + 1;
       let eliminarEnergia = document.getElementById("eliminarEnergia").value;
 
       this.socketCoonection.send(
         JSON.stringify({
           tipo: "eliminarEnergia",
           nombreEnergia: eliminarEnergia,
+          idPeticion: idPeticion,
         })
       );
 
-      window.location.reload();
+      this.socketCoonection.onmessage = (event) => {
+        this.estadoSolicitud = JSON.parse(event.data).estadoSolicitud;
+      };
+
+      let intervalId = setInterval(() => {
+
+        this.socketCoonection.onmessage = (event) => {
+          this.estadoSolicitud = JSON.parse(event.data).estadoSolicitud;
+        };
+
+        if (this.estadoSolicitud === `Solicitud ${idPeticion} finalizada`) {
+          this.processInUse = false;
+          clearInterval(intervalId);
+          window.location.reload();
+        }
+        else {
+          this.processInUse = true;
+
+          console.log('Esperando respuesta del servidor');
+
+        }
+      }, 2000);
+
+     
     },
     agregarProvincia() {
+      const idPeticion = Math.floor(Math.random() * 1000) + 1;
       let nombreProvincia = document.getElementById("NombreProvincia").value;
 
       if (nombreProvincia == "") {
@@ -371,10 +430,33 @@ export default {
           JSON.stringify({
             tipo: "agregarProvincia",
             nombreProvincia: nombreProvincia,
+            idPeticion: idPeticion,
           })
         );
 
-        window.location.reload();
+        this.socketCoonection.onmessage = (event) => {
+          this.estadoSolicitud = JSON.parse(event.data).estadoSolicitud;
+        };
+
+        let intervalId = setInterval(() => {
+
+          this.socketCoonection.onmessage = (event) => {
+            this.estadoSolicitud = JSON.parse(event.data).estadoSolicitud;
+          };
+
+          if (this.estadoSolicitud === `Solicitud ${idPeticion} finalizada`) {
+            this.processInUse = false;
+            clearInterval(intervalId);
+            window.location.reload();
+          }
+          else {
+            this.processInUse = true;
+
+            console.log('Esperando respuesta del servidor');
+
+          }
+        }, 2000);
+
       }
     },
   },
