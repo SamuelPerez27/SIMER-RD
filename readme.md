@@ -32,4 +32,5 @@ Antes de implementar la programación presentaba 3 problemas en el programa de s
 ![image](https://github.com/SamuelPerez27/SIMER-RD/assets/61362199/402718ec-7314-47d8-aa32-558e4c2539e4)
 
 **Escenario cuando la provincia no existe en la lista -> Resultado: Se agrega a la lista** 
+
 ![image](https://github.com/SamuelPerez27/SIMER-RD/assets/61362199/27e41007-c55a-40eb-acff-52154f6e997b)
