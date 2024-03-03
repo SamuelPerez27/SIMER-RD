@@ -27,7 +27,7 @@ Antes de implementar la programación presentaba 3 problemas en el programa de s
 ![image](https://github.com/SamuelPerez27/SIMER-RD/assets/61362199/40e24e33-151e-4ca5-8fb1-f5676325ffaa)
 
 
-**Escenario cuando la provincia existe en la lista -> Resultado: No agrega a la lista y se informa a l usuario** 
+**Escenario cuando la provincia existe en la lista -> Resultado: No agrega a la lista y se informa al usuario** 
 ![image](https://github.com/SamuelPerez27/SIMER-RD/assets/61362199/402718ec-7314-47d8-aa32-558e4c2539e4)
 
 **Escenario cuando la provincia no existe en la lista -> Resultado: Se agrega a la lista** 
