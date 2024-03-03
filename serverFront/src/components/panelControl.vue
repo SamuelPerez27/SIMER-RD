@@ -277,9 +277,7 @@ export default {
         event.data
       ).cantidadTotalEnergiasRenovables;
 
-      this.totalEnergiaProducida += JSON.parse(
-        event.data
-      ).produccionEnergiaPlanta;
+      this.totalEnergiaProducida = JSON.parse(event.data).totalEnergiaProducida;
 
       this.recordsHistory += JSON.parse(
         event.data
@@ -320,9 +318,10 @@ export default {
         }, 1000);
       }
 
-      this.promedioDeEnegia = (
-        this.totalEnergiaProducida / this.recordsHistory
-      ).toFixed(2);
+      this.promedioDeEnegia =  JSON.parse(
+        event.data
+      ).promedioDeProduccionDeEnergias;
+
     };
   },
   methods: {

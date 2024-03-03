@@ -128,6 +128,57 @@ function liberarSemaforo() {
   console.log('El semáforo ha sido liberado');
 }
 
+//Funciones recursivas
+const produccionTotal = []
+function calcularProduccionTotal(producccionEnergia) {
+
+  //Caso base
+  if (producccionEnergia.length === 0) {
+    return 0;
+  }
+
+  //Caso recursivo
+  const produccionActual = producccionEnergia[0].produccionEnergiaPlanta;
+  const produccionAnterior = calcularProduccionTotal(producccionEnergia.slice(1));
+
+  return produccionActual + produccionAnterior;
+}
+
+function buscarProvincias(listadeProvincias, nombrePronvicia) {
+    //Caso base
+    if(listadeProvincias.length === 0) {
+      return false;
+    }
+
+    if(listadeProvincias[0] === nombrePronvicia) {
+      return true;
+    }
+
+    //Caso recursivo
+    return buscarProvincias(listadeProvincias.slice(1), nombrePronvicia);
+}
+
+function buscarEnergias(listadeEnergias, nombreEnergia) {
+  //Caso base
+  if(listadeEnergias.length === 0) {
+    return false;
+  }
+
+  if(listadeEnergias[0] === nombreEnergia) {
+    return true;
+  }
+
+  //Caso recursivo
+  return buscarEnergias(listadeEnergias.slice(1), nombreEnergia);
+}
+
+//Funciones de promedio
+function calcularPromedioDeProduccion(totalEnergiaProducida, totalDeEnergiasRenovables) {
+
+  const totalDeEnergiasRenovablesLength = totalDeEnergiasRenovables.length;
+
+  return (totalEnergiaProducida / totalDeEnergiasRenovablesLength).toFixed(2);
+}
 
 
 // Eventos del WebSocket
@@ -163,6 +214,13 @@ wss.on("connection", function connection(ws) {
       produccionMaxima: produccionEnergia[tipo][1],
     }));
 
+    produccionTotal.push({ produccionEnergiaPlanta });
+
+    const totalEnergiaProducida = calcularProduccionTotal([...produccionTotal] )
+    const promedioDeProduccionDeEnergias = calcularPromedioDeProduccion(totalEnergiaProducida, nombresPlantasRenovablesRandom);
+
+  
+
     const data = JSON.stringify({
       nombresPlantasRenovablesRandom,
       tipoEnergiaPlanta,
@@ -173,8 +231,10 @@ wss.on("connection", function connection(ws) {
       cantidadTotalEnergiasRenovables,
       produccionPorTipoEnergia,
       ubicacionesTotales: ubicaciones,
+      totalEnergiaProducida: totalEnergiaProducida, 
+      promedioDeProduccionDeEnergias: promedioDeProduccionDeEnergias
     });
-   // console.log('Enviando: ' + data);
+    //console.log('Enviando: ' + data);
     ws.send(data);
   }, 5000);
 
@@ -200,27 +260,39 @@ wss.on("connection", function connection(ws) {
 
           console.log('Se adquirio el semaforo');
 
-          ws.send(JSON.stringify({
-            estadoSolicitud: `Solicitud ${idPeticion} En Proceso`
-          }));
+          if(buscarEnergias(tiposEnergia, nombreEnergia)) {
 
-          setTimeout(function() {
-            
-            tiposEnergia.push(`${nombreEnergia}`);
-            produccionEnergia[`${nombreEnergia}`] = [
-              produccionMinima,
-              produccionMaxima,
-            ];
-            
-            console.log('Se agrego la energia', nombreEnergia, 'con produccion minima', produccionMinima, 'y produccion maxima', produccionMaxima);
-  
-            liberarSemaforo(); //Se llama la funcion para liberar el semaforo
-          
-            ws.send(JSON.stringify({ estadoSolicitud: `Solicitud ${idPeticion} finalizada` }));
-  
-            console.log('----- Solicitud Finalizada -----');
+            setTimeout(function() {
+              console.log('La energia ya existe');
+              ws.send(JSON.stringify({ estadoSolicitud: `La energia ${nombreEnergia} ya existe` }));
+              liberarSemaforo(); //Se llama la funcion para liberar el semaforo
+            }, 20000);
 
-          }, 20000);
+          }
+          else{
+
+            ws.send(JSON.stringify({
+              estadoSolicitud: `Solicitud ${idPeticion} En Proceso`
+            }));
+
+            setTimeout(function() {
+              
+              tiposEnergia.push(`${nombreEnergia}`);
+              produccionEnergia[`${nombreEnergia}`] = [
+                produccionMinima,
+                produccionMaxima,
+              ];
+              
+              console.log('Se agrego la energia', nombreEnergia, 'con produccion minima', produccionMinima, 'y produccion maxima', produccionMaxima);
+    
+              liberarSemaforo(); //Se llama la funcion para liberar el semaforo
+            
+              ws.send(JSON.stringify({ estadoSolicitud: `Solicitud ${idPeticion} finalizada` }));
+    
+              console.log('----- Solicitud Finalizada -----');
+
+            }, 20000);
+          }
 
         }
         else {
@@ -287,20 +359,31 @@ wss.on("connection", function connection(ws) {
           estadoSolicitud: `Solicitud ${idPeticion} En Proceso`
         }));
 
-        setTimeout(function() {
+        if(buscarProvincias(ubicaciones, nombreProvincia)) {
+
+          setTimeout(function() {
+            console.log('La provincia ya existe');
+            ws.send(JSON.stringify({ estadoSolicitud: `La provincia ${nombreProvincia} ya existe` }));
+            liberarSemaforo(); //Se llama la funcion para liberar el semaforo
+          }, 20000);
+
+        }
+        else
+
+          setTimeout(function() {
+            
+            ubicaciones.push(`${nombreProvincia}`);
+            
+            console.log('Se agrego la provincia ', nombreProvincia);
+
+            liberarSemaforo(); //Se llama la funcion para liberar el semaforo
           
-          ubicaciones.push(`${nombreProvincia}`);
-          
-          console.log('Se agrego la provincia ', nombreProvincia);
+            ws.send(JSON.stringify({ estadoSolicitud: `Solicitud ${idPeticion} finalizada` }));
 
-          liberarSemaforo(); //Se llama la funcion para liberar el semaforo
-        
-          ws.send(JSON.stringify({ estadoSolicitud: `Solicitud ${idPeticion} finalizada` }));
+            console.log('----- Solicitud Finalizada -----');
 
-          console.log('----- Solicitud Finalizada -----');
-
-        }, 20000);
-
+          }, 20000);
+        }
       }
       else {
         console.log('Se envio solicitud en espera');
@@ -308,5 +391,5 @@ wss.on("connection", function connection(ws) {
       }
       
     }
-  });
+  );
 });
